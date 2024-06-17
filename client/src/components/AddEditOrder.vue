@@ -137,7 +137,7 @@ watch(localDialogVisible, (newVal) => {
 });
 
 const addOrderItem = () => {
-    orderForm.order_items.push({ product: '', quantity: 1 });
+    orderForm.order_items.push({ product: '1', quantity: 1 });
 };
 
 const removeOrderItem = (index) => {
