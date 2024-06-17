@@ -21,9 +21,17 @@ Steps:
     pip install virtualenv
     ```
 4. Create python virtual environment.
-    ```
+
+   In Linux or Mac, create the new python virtual environment
+   ```
     virtualenv venv
     ```
+
+   Or in Windows
+   ```
+    python -m virtualenv venv
+    ```
+   
 5. Activate the environment.
 
    In Linux or Mac, activate the new python environment
