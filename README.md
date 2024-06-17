@@ -77,5 +77,6 @@ Steps:
 
 ## Preview
 
+[preview-fero.webm](https://github.com/virenribadiya/Ecommerce-fero-task/assets/108461765/7c53310b-c70b-4a68-81a3-03445c169bac)
 
 
