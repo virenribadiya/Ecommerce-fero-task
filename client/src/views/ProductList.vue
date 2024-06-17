@@ -39,7 +39,6 @@ const headers = [
 ];
 
 const openDialog = () => {
-    console.log("Open");
     dialogVisible.value = true;
 }
 

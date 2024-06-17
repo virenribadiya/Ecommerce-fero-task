@@ -8,14 +8,18 @@
 
             <div class="v-container">
                 <form>
-                    <v-text-field v-model="productForm.name" label="Name" required></v-text-field>
+                    <v-text-field v-model="productForm.name" label="Name"
+                        :error-messages="v$.name.$errors.map(e => e.$message)" @input="v$.name.$reset"
+                        @focus="v$.name.$reset"></v-text-field>
 
-                    <v-text-field v-model="productForm.weight" label="Weight (in kg)" type="number" min="1" required></v-text-field>
+                    <v-text-field v-model="productForm.weight" label="Weight (in kg)" type="number" min="1"
+                        :error-messages="v$.weight.$errors.map(e => e.$message)" @input="v$.weight.$reset"
+                        @focus="v$.weight.$reset"></v-text-field>
 
                     <v-divider></v-divider>
                     <v-card-actions>
                         <v-btn color="primary" variant="outlined" @click="submitProductForm">Submit</v-btn>
-                        <v-btn color="red"  variant="outlined" @click="closeDialog">Close</v-btn>
+                        <v-btn color="red" variant="outlined" @click="closeDialog">Close</v-btn>
                     </v-card-actions>
                 </form>
             </div>
@@ -24,19 +28,34 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
+import useVuelidate from '@vuelidate/core';
+import { helpers, required } from '@vuelidate/validators';
+
 
 const props = defineProps({
-  dialogVisible: {
-    type: Boolean,
-    default: false
-  }
+    dialogVisible: {
+        type: Boolean,
+        default: false
+    }
 });
 
-const productForm = ref({
+const productForm = reactive({
     name: "",
     weight: ""
 })
+
+const rules = {
+    name: {
+        required: helpers.withMessage("", required)
+    },
+    weight: {
+        required: helpers.withMessage("", required),
+        customLimit: helpers.withMessage("Not more than 25kg", (value) => { return !value || isNaN(value) ? false : parseFloat(value) > 0 && parseFloat(value) <= 25; })
+    },
+}
+
+const v$ = useVuelidate(rules, productForm);
 
 const localDialogVisible = ref(props.dialogVisible);
 
@@ -55,30 +74,32 @@ watch(localDialogVisible, (newVal) => {
 });
 
 const submitProductForm = async () => {
+    const isValidate = await v$.value.$validate();
     const apiUrl = `http://127.0.0.1:8000/api/products/`;
     const method = 'POST';
 
-    try {
-        const response = await fetch(apiUrl, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(productForm.value)
-        });
+    if (isValidate) {
+        try {
+            const response = await fetch(apiUrl, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productForm)
+            });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            closeDialog();
+
+        } catch (error) {
+            console.error('Error submitting form:', error);
         }
-
-        const result = await response.json();
-
-        closeDialog();
-        
-    } catch (error) {
-        console.error('Error submitting form:', error);
     }
 }
 
 </script>
-

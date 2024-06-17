@@ -10,14 +10,14 @@
         <v-card-text class="d-flex my-2 align-center">
 
             <v-text-field class="mx-2" v-model="searchByCustomerName" density="compact" prepend-inner-icon="mdi-magnify"
-                variant="solo-filled" label="Search by customer name" flat hide-details single-line></v-text-field>
+                label="Search by customer name" hide-details ></v-text-field>
             <v-btn variant="outlined" @click="filterSearchByCustomerName">Search</v-btn>
 
 
             &nbsp;&nbsp;&nbsp;&nbsp;
 
             <v-text-field class="mx-2" v-model="searchByProducts" density="compact" prepend-inner-icon="mdi-magnify"
-                variant="solo-filled" label="Search by products" flat hide-details single-line></v-text-field>
+                label="Search by products" hide-details></v-text-field>
             <v-btn variant="outlined" @click="filterSearchByProducts">Search</v-btn>
 
             <v-spacer></v-spacer>
@@ -52,7 +52,7 @@
 
 <script setup>
 import AddEditOrder from '@/components/AddEditOrder.vue';
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const loading = ref(false);
 const orderList = ref([]);
@@ -154,7 +154,7 @@ const orderItemListGetter = (arrayOfObjects) => {
     for (var i = 0; i < arrayOfObjects.length; i++) {
         let nameOfProduct = productNameFromId(arrayOfObjects[i].product);
         let quantity = String(arrayOfObjects[i].quantity);
-        orderItemStr += (nameOfProduct+" x "+quantity+" ,");
+        orderItemStr += (nameOfProduct + " x " + quantity + " ,");
     }
     return orderItemStr;
 }
