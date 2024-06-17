@@ -25,8 +25,15 @@ Steps:
     virtualenv venv
     ```
 5. Activate the environment.
-    ```
+
+   In Linux or Mac, activate the new python environment
+   ```
     source venv/bin/activate
+    ```
+
+   Or in Windows
+   ```
+    .\venv\Scripts\activate
     ```
 
 6. install dependacies for python virtual environment.
